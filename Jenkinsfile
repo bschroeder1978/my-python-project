@@ -11,6 +11,13 @@ pipeline {
                 }
             }
         }
+        stage('Test') {
+            steps {
+                //pip install -r requirements.txt
+                //pip install pytest
+                sh 'pytest | tee report.txt'
+            }
+        }
     }
 
 }
