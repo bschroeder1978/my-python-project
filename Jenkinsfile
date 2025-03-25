@@ -11,6 +11,7 @@ pipeline {
                     sh 'python3 -m flake8 --version'
                     // Lancer l'analyse
                     sh '(python3 -m flake8 . --count --show-source --statistics || true) | tee flake.txt'
+                    archiveArtifacts artifacts: 'flake.txt', fingerprint: true
                 }
             }
         }
