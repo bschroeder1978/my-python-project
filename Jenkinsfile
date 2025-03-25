@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_LOGIN=bschroeder1978
+        DOCKER_LOGIN='bschroeder1978'
     }
     stages {
         stage('Flake') {
