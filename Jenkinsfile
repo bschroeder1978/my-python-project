@@ -4,26 +4,26 @@ pipeline {
         DOCKER_LOGIN='bschroeder1978'
     }
     stages {
-        parallel {
-        stage('Flake') {
-            steps {
-                script {
-                    sh 'python3 --version'
-                    sh 'python3 -m flake8 --version'
-                    // Lancer l'analyse
-                    sh '(python3 -m flake8 . --count --show-source --statistics || true) | tee flake.txt'
-                    archiveArtifacts artifacts: 'flake.txt', fingerprint: true
+        stage('Flake&Test') {
+            parallel {  
+                stage('Flake') {
+                    steps {
+                        script {
+                            sh 'python3 --version'
+                            sh 'python3 -m flake8 --version'
+                            // Lancer l'analyse
+                            sh '(python3 -m flake8 . --count --show-source --statistics || true) | tee flake.txt'
+                            archiveArtifacts artifacts: 'flake.txt', fingerprint: true
+                        }
+                    }
+                }
+                stage('Test') {
+                    steps {
+                        sh 'pytest | tee report.txt'
+                        archiveArtifacts artifacts: 'report.txt', fingerprint: true
+                    }
                 }
             }
-        }
-        stage('Test') {
-            steps {
-                //pip install -r requirements.txt
-                //pip install pytest
-                sh 'pytest | tee report.txt'
-                archiveArtifacts artifacts: 'report.txt', fingerprint: true
-            }
-        }
         }
         stage('Docker Publish') {
             steps {
@@ -38,5 +38,4 @@ pipeline {
             }
         }
     }
-
 }
