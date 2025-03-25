@@ -19,6 +19,7 @@ pipeline {
                 //pip install -r requirements.txt
                 //pip install pytest
                 sh 'pytest | tee report.txt'
+                archiveArtifacts artifacts: 'report.txt', fingerprint: true
             }
         }
         stage('Docker Publish') {
