@@ -25,11 +25,11 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'BSC_DOCKER_PASSWORD', variable: 'DOCKER_PASS')]) {
                     //Construire l'image Docker avec le BUILD_NUMBER de Jenkins 
-                    docker build -t bschroeder1978/my-python-project:$BUILD_NUMBER . 
+                    sh 'docker build -t bschroeder1978/my-python-project:$BUILD_NUMBER .'
                     // Se connecter à Docker Hub en utilisant le token d'accès 
-                    docker login -u $DOCKER_LOGIN -p $DOCKER_PASS 
+                    sh 'docker login -u $DOCKER_LOGIN -p $DOCKER_PASS' 
                     //Pousser l'image sur Docker Hub 
-                    docker push bschroeder1978/my-python-project:$BUILD_NUMBER 
+                    sh 'docker push bschroeder1978/my-python-project:$BUILD_NUMBER'
                 }
             }
         }
