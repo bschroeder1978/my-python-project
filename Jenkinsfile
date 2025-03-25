@@ -4,6 +4,7 @@ pipeline {
         DOCKER_LOGIN='bschroeder1978'
     }
     stages {
+        parallel {
         stage('Flake') {
             steps {
                 script {
@@ -22,6 +23,7 @@ pipeline {
                 sh 'pytest | tee report.txt'
                 archiveArtifacts artifacts: 'report.txt', fingerprint: true
             }
+        }
         }
         stage('Docker Publish') {
             steps {
